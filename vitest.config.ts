@@ -10,7 +10,12 @@ export default defineConfig({
       reporter: ['text', 'lcov', 'clover', 'json'],
       all: true,
       include: ['packages/**/src/**/*.ts'],
-      exclude: ['**/dist/**', '**/node_modules/**', '**/*.d.ts'],
+      exclude: [
+        '**/dist/**',
+        '**/node_modules/**',
+        '**/*.d.ts',
+        '**/testHelpers/**',
+      ],
     },
   },
 });

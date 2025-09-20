@@ -45,6 +45,12 @@ export class MemoryBackend implements Backend {
     return { ...account }; // Clone the account to avoid mutating the original object
   }
 
+  async getAccountChildren(accountId: string): Promise<Account[]> {
+    return Array.from(this.accounts.values()).filter(
+      (account) => account.parentId === accountId,
+    );
+  }
+
   async updateAccount(
     accountId: string,
     account: Partial<Omit<Account, 'id'>>,

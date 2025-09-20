@@ -1,5 +1,6 @@
 import { Backend, inverseSide } from '@germanamz/luca-common';
 import { CreateTransactionRequest, CreateEntryRequest } from './types';
+import Decimal from 'decimal.js';
 
 export class Luca {
   readonly backend: Backend;
@@ -75,5 +76,29 @@ export class Luca {
       destinationEntryId,
       sourceEntryId,
     };
+  }
+
+  async getBalance(
+    accountId: string,
+  ): Promise<{ debits: Decimal; credits: Decimal }> {
+    const account = await this.backend.getAccount(accountId);
+    const children = await this.backend.getAccountChildren(accountId);
+
+    if (children.length === 0) {
+      return { debits: account.debits, credits: account.credits };
+    }
+
+    let debits = new Decimal(0);
+    let credits = new Decimal(0);
+
+    for (const child of children) {
+      const { debits: childDebits, credits: childCredits } =
+        await this.getBalance(child.id);
+
+      debits = debits.add(childDebits);
+      credits = credits.add(childCredits);
+    }
+
+    return { debits, credits };
   }
 }

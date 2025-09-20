@@ -6,6 +6,7 @@ export interface Backend {
   createEntry(entry: Omit<Entry, 'id'>): Promise<string>;
 
   getAccount(accountId: string): Promise<Account>;
+  getAccountChildren(accountId: string): Promise<Account[]>;
   getTransaction(transactionId: string): Promise<Transaction>;
   getEntry(entryId: string): Promise<Entry>;
 

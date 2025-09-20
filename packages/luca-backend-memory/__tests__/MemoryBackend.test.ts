@@ -1,6 +1,13 @@
 import { Decimal } from 'decimal.js';
 import { MemoryBackend } from '../src';
-import { Account, Entry, Transaction } from '@germanamz/luca-common';
+import {
+  Account,
+  Entry,
+  mockCreditAccountData,
+  mockDebitAccountData,
+  Transaction,
+} from '@germanamz/luca-common';
+import {} from '@germanamz/luca-common';
 
 describe('MemoryBackend', () => {
   describe('createAccount', () => {
@@ -180,6 +187,33 @@ describe('MemoryBackend', () => {
       await expect(backend.getEntry('non-existent-entry-id')).rejects.toThrow(
         'Entry non-existent-entry-id not found',
       );
+    });
+  });
+
+  describe('getAccountChildren', () => {
+    it('should get the children of an account', async () => {
+      const backend = new MemoryBackend();
+      const profitAccountData = mockCreditAccountData({
+        name: 'Profit',
+      });
+      const profitAccountId = await backend.createAccount(profitAccountData);
+      const expensesAccountData = mockDebitAccountData({
+        name: 'Expenses',
+        parentId: profitAccountId,
+      });
+      const expensesAccountId =
+        await backend.createAccount(expensesAccountData);
+      const revenueAccountData = mockCreditAccountData({
+        name: 'Revenue',
+        parentId: profitAccountId,
+      });
+      const revenueAccountId = await backend.createAccount(revenueAccountData);
+      const children = await backend.getAccountChildren(profitAccountId);
+
+      expect(children).toEqual([
+        { ...expensesAccountData, id: expensesAccountId },
+        { ...revenueAccountData, id: revenueAccountId },
+      ]);
     });
   });
 });
