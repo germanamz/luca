@@ -18,6 +18,12 @@ jobs:
         with:
           node-version: 22.17.1
 
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Activate pnpm 10.15.1
+        run: corepack prepare pnpm@10.15.1 --activate
+
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
