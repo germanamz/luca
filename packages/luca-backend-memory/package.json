@@ -1,0 +1,39 @@
+{
+  "name": "@germanamz/luca-backend-memory",
+  "version": "0.0.0",
+  "description": "Just a simple memory backend for the luca engine",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "dev": "tsc -b -w tsconfig.build.json",
+    "build": "tsc -b tsconfig.build.json",
+    "clean": "tsc -b --clean tsconfig.build.json",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "luca",
+    "pacioli",
+    "accounting",
+    "finance",
+    "bookkeeping",
+    "engine"
+  ],
+  "author": "German Meza <iam@germanamz.com>",
+  "license": "MIT",
+  "packageManager": "pnpm@10.15.1",
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  },
+  "dependencies": {
+    "@germanamz/luca-common": "workspace:*",
+    "decimal.js": "catalog:"
+  }
+}

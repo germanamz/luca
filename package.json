@@ -1,0 +1,39 @@
+{
+  "name": "luca",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Just a simple accounting engine",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "clean": "turbo clean",
+    "typecheck": "turbo typecheck",
+    "lint": "oxlint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
+    "prepare": "husky"
+  },
+  "keywords": [
+    "luca",
+    "pacioli",
+    "accounting",
+    "finance",
+    "bookkeeping",
+    "engine"
+  ],
+  "author": "German Meza <iam@germanamz.com>",
+  "license": "MIT",
+  "packageManager": "pnpm@10.15.1",
+  "devDependencies": {
+    "@prettier/plugin-oxc": "^0.0.4",
+    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/ui": "3.2.4",
+    "husky": "^9.1.7",
+    "oxlint": "^1.16.0",
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.6",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}
