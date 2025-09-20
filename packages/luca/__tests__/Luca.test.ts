@@ -5,10 +5,10 @@ import {
   inverseSide,
   mockCreditAccountData,
   mockCreditEntryData,
-  mockDebitAccountData,
   mockDebitEntryData,
   Side,
 } from '@germanamz/luca-common';
+import { profitAccountPreset } from './presets';
 
 describe('Luca', () => {
   describe('createEntry', () => {
@@ -159,52 +159,21 @@ describe('Luca', () => {
     });
 
     it('should get the credits and debits balance of a composed account', async () => {
-      const backend = new MemoryBackend();
-      const profitAccountData = mockCreditAccountData({
-        name: 'Profit',
-      });
-      const profitAccountId = await backend.createAccount(profitAccountData);
-      const expensesAccountId = await backend.createAccount(
-        mockDebitAccountData({
-          name: 'Expenses',
-          parentId: profitAccountId,
-        }),
-      );
-      const revenueAccountId = await backend.createAccount(
-        mockCreditAccountData({
-          name: 'Revenue',
-          parentId: profitAccountId,
-        }),
-      );
-      const luca = new Luca(backend);
-
-      await luca.createEntry(
-        mockDebitEntryData({
-          accountId: expensesAccountId,
-          amount: new Decimal(100),
-        }),
-      );
-      await luca.createEntry(
-        mockCreditEntryData({
-          accountId: revenueAccountId,
-          amount: new Decimal(10),
-        }),
-      );
-      await luca.createEntry(
-        mockCreditEntryData({
-          accountId: revenueAccountId,
-          amount: new Decimal(100),
-        }),
-      );
-
+      const {
+        backend,
+        luca,
+        profitAccountId,
+        expensesAccountId,
+        revenueAccountId,
+      } = await profitAccountPreset();
       const balance = await luca.getBalance(profitAccountId);
       const profit = await backend.getAccount(profitAccountId);
       const expenses = await backend.getAccount(expensesAccountId);
       const revenue = await backend.getAccount(revenueAccountId);
 
       expect(balance).toEqual({
-        debits: new Decimal(100),
-        credits: new Decimal(110),
+        debits: new Decimal(110),
+        credits: new Decimal(120),
       });
       expect(profit).toEqual(
         expect.objectContaining({
@@ -215,13 +184,30 @@ describe('Luca', () => {
       expect(expenses).toEqual(
         expect.objectContaining({
           debits: new Decimal(100),
-          credits: new Decimal(0),
+          credits: new Decimal(10),
         }),
       );
       expect(revenue).toEqual(
         expect.objectContaining({
+          debits: new Decimal(10),
           credits: new Decimal(110),
-          debits: new Decimal(0),
+        }),
+      );
+    });
+  });
+
+  describe('updateBalance', () => {
+    it('should update the balance of an account', async () => {
+      const { backend, luca, profitAccountId } = await profitAccountPreset();
+
+      await luca.updateBalance(profitAccountId);
+
+      const profit = await backend.getAccount(profitAccountId);
+
+      expect(profit).toEqual(
+        expect.objectContaining({
+          debits: new Decimal(110),
+          credits: new Decimal(120),
         }),
       );
     });

@@ -101,4 +101,10 @@ export class Luca {
 
     return { debits, credits };
   }
+
+  async updateBalance(accountId: string) {
+    const { debits, credits } = await this.getBalance(accountId);
+
+    await this.backend.updateAccount(accountId, { debits, credits });
+  }
 }
