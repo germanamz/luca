@@ -7,7 +7,6 @@ import {
   mockDebitAccountData,
   Transaction,
 } from '@germanamz/luca-common';
-import {} from '@germanamz/luca-common';
 
 describe('MemoryBackend', () => {
   describe('createAccount', () => {
