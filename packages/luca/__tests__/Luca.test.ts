@@ -17,7 +17,7 @@ describe('Luca', () => {
         expensesAccountData,
         revenueAccountId,
         revenueAccountData,
-      } = await profitAccountPreset(backend);
+      } = profitAccountPreset(backend);
       const expensesEntryData = mockEntryData({
         accountId: expensesAccountId,
         amount: new Decimal(10),
@@ -93,28 +93,22 @@ describe('Luca', () => {
     it.each([
       {
         sourceSide: 'DEBIT',
-        sourceName: 'Cash',
         destinationSide: 'DEBIT',
-        destinationName: 'Land',
       },
       {
         sourceSide: 'CREDIT',
-        sourceName: 'Credit Card',
         destinationSide: 'DEBIT',
-        destinationName: 'Equipment',
       },
     ])(
-      'should create a transaction from $sourceName ($sourceSide) to $destinationName ($destinationSide)',
-      async ({ sourceSide, sourceName, destinationSide, destinationName }) => {
+      'should create a transaction from account with $sourceSide side to account with $destinationSide side',
+      async ({ sourceSide, destinationSide }) => {
         const backend = new MemoryBackend();
         const sourceAccountId = backend.createAccount({
-          name: sourceName,
           side: sourceSide as Side,
           credits: new Decimal(0),
           debits: new Decimal(0),
         });
         const destinationAccountId = backend.createAccount({
-          name: destinationName,
           side: destinationSide as Side,
           credits: new Decimal(0),
           debits: new Decimal(0),

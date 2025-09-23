@@ -4,21 +4,17 @@ import {
   mockDebitAccountData,
 } from '@germanamz/luca-common';
 
-export const profitAccountPreset = async (backend: MemoryBackend) => {
-  const profitAccountData = mockCreditAccountData({
-    name: 'Profit',
-  });
-  const profitAccountId = await backend.createAccount(profitAccountData);
+export const profitAccountPreset = (backend: MemoryBackend) => {
+  const profitAccountData = mockCreditAccountData();
+  const profitAccountId = backend.createAccount(profitAccountData);
   const expensesAccountData = mockDebitAccountData({
-    name: 'Expenses',
     parentId: profitAccountId,
   });
-  const expensesAccountId = await backend.createAccount(expensesAccountData);
+  const expensesAccountId = backend.createAccount(expensesAccountData);
   const revenueAccountData = mockCreditAccountData({
-    name: 'Revenue',
     parentId: profitAccountId,
   });
-  const revenueAccountId = await backend.createAccount(revenueAccountData);
+  const revenueAccountId = backend.createAccount(revenueAccountData);
 
   return {
     backend,
