@@ -6,7 +6,6 @@ export const mockBackend = (props?: Partial<Backend>): Backend => ({
   createEntry: vi.fn().mockResolvedValue('entryId'),
   getAccount: vi.fn().mockResolvedValue({
     id: 'accountId',
-    name: 'Account',
     side: 'DEBIT',
     credits: new Decimal(0),
     debits: new Decimal(0),
@@ -16,7 +15,6 @@ export const mockBackend = (props?: Partial<Backend>): Backend => ({
     sourceAccountId: 'sourceAccountId',
     destinationAccountId: 'destinationAccountId',
     amount: new Decimal(0),
-    concept: 'Test Transaction',
     date: new Date(),
   }),
   getEntry: vi.fn().mockResolvedValue({
@@ -31,7 +29,6 @@ export const mockBackend = (props?: Partial<Backend>): Backend => ({
   getAccountChildren: vi.fn().mockResolvedValue([
     {
       id: 'accountId',
-      name: 'Account',
       side: 'DEBIT',
       credits: new Decimal(0),
       debits: new Decimal(0),

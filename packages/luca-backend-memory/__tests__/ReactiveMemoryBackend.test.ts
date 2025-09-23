@@ -12,7 +12,6 @@ describe('ReactiveMemoryBackend', () => {
 
       const accountData: Omit<Account, 'id'> = {
         side: 'DEBIT',
-        name: 'Cash',
         credits: new Decimal(0),
         debits: new Decimal(0),
       };
@@ -34,7 +33,6 @@ describe('ReactiveMemoryBackend', () => {
 
       const accountData: Omit<Account, 'id'> = {
         side: 'DEBIT',
-        name: 'Cash',
         credits: new Decimal(0),
         debits: new Decimal(0),
       };
@@ -104,18 +102,17 @@ describe('ReactiveMemoryBackend', () => {
 
       const accountData: Omit<Account, 'id'> = {
         side: 'DEBIT',
-        name: 'Cash',
         credits: new Decimal(0),
         debits: new Decimal(0),
       };
       const accountId = backend.createAccount(accountData);
 
       backend.updateAccount(accountId, {
-        name: 'Updated Cash',
+        debits: new Decimal(10),
       });
 
       expect(observer).toHaveBeenCalledWith('updateAccount', accountId, {
-        name: 'Updated Cash',
+        debits: new Decimal(10),
       });
     });
 
@@ -124,7 +121,7 @@ describe('ReactiveMemoryBackend', () => {
 
       expect(() =>
         backend.updateAccount('non-existent-account-id', {
-          name: 'Updated Cash',
+          debits: new Decimal(10),
         }),
       ).toThrow('Account non-existent-account-id not found');
     });

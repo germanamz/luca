@@ -5,7 +5,6 @@ export type Side = 'DEBIT' | 'CREDIT';
 export type Account = {
   id: string;
   side: Side;
-  name: string;
   credits: Decimal;
   debits: Decimal;
   parentId?: string;

@@ -14,7 +14,6 @@ describe('MemoryBackend', () => {
       const backend = new MemoryBackend();
       const accountData: Omit<Account, 'id'> = {
         side: 'DEBIT',
-        name: 'Cash',
         credits: new Decimal(0),
         debits: new Decimal(0),
       };
@@ -75,7 +74,6 @@ describe('MemoryBackend', () => {
       const backend = new MemoryBackend();
       const accountData: Omit<Account, 'id'> = {
         side: 'DEBIT',
-        name: 'Cash',
         credits: new Decimal(0),
         debits: new Decimal(0),
       };
@@ -102,7 +100,6 @@ describe('MemoryBackend', () => {
       const backend = new MemoryBackend();
       const accountData: Omit<Account, 'id'> = {
         side: 'DEBIT',
-        name: 'Cash',
         credits: new Decimal(0),
         debits: new Decimal(0),
       };
@@ -110,14 +107,14 @@ describe('MemoryBackend', () => {
       const originalAccount = backend.getAccount(accountId);
 
       backend.updateAccount(accountId, {
-        name: 'Updated Cash',
+        debits: new Decimal(10),
       });
 
       const account = backend.getAccount(accountId);
 
       expect(account).toEqual({
         ...originalAccount,
-        name: 'Updated Cash',
+        debits: new Decimal(10),
       });
     });
 
@@ -126,7 +123,7 @@ describe('MemoryBackend', () => {
 
       expect(() =>
         backend.updateAccount('non-existent-account-id', {
-          name: 'Updated Cash',
+          debits: new Decimal(10),
         }),
       ).toThrow('Account non-existent-account-id not found');
     });
@@ -190,17 +187,13 @@ describe('MemoryBackend', () => {
   describe('getAccountChildren', () => {
     it('should get the children of an account', () => {
       const backend = new MemoryBackend();
-      const profitAccountData = mockCreditAccountData({
-        name: 'Profit',
-      });
+      const profitAccountData = mockCreditAccountData();
       const profitAccountId = backend.createAccount(profitAccountData);
       const expensesAccountData = mockDebitAccountData({
-        name: 'Expenses',
         parentId: profitAccountId,
       });
       const expensesAccountId = backend.createAccount(expensesAccountData);
       const revenueAccountData = mockCreditAccountData({
-        name: 'Revenue',
         parentId: profitAccountId,
       });
       const revenueAccountId = backend.createAccount(revenueAccountData);
