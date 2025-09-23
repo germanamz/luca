@@ -1,6 +1,6 @@
 {
   "name": "@germanamz/luca-backend-memory",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Just a simple memory backend for the luca engine",
   "files": [
     "dist"

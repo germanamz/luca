@@ -1,5 +1,14 @@
 # @germanamz/luca
 
+## 0.5.1
+
+### Patch Changes
+
+- bd3f6ec: Export Observer
+- Updated dependencies [bd3f6ec]
+  - @germanamz/luca-backend-memory@0.5.1
+  - @germanamz/luca-common@0.5.1
+
 ## 0.5.0
 
 ### Minor Changes
