@@ -1,5 +1,16 @@
 # @germanamz/luca-backend-memory
 
+## 0.9.0
+
+### Minor Changes
+
+- 13a4901: No name for accounts in favor for an abstract Luca.
+
+### Patch Changes
+
+- Updated dependencies [13a4901]
+  - @germanamz/luca-common@0.9.0
+
 ## 0.8.0
 
 ### Minor Changes
