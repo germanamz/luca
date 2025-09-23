@@ -1,13 +1,13 @@
 import { Account, Backend, Entry, Transaction } from '@germanamz/luca-common';
 import { MemoryBackend } from './MemoryBackend';
 
-type Actions =
+export type Actions =
   | 'createAccount'
   | 'createTransaction'
   | 'createEntry'
   | 'updateAccount';
 
-type Observer = <A, R>(action: Actions, args: A, result: R) => void;
+export type Observer = <A, R>(action: Actions, args: A, result: R) => void;
 
 export class ReactiveMemoryBackend extends MemoryBackend implements Backend {
   private observers: Set<Observer> = new Set();
