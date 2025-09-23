@@ -1,5 +1,16 @@
 # @germanamz/luca-backend-memory
 
+## 0.7.0
+
+### Minor Changes
+
+- 833b7b4: Custom Context for filtering or any purpose.
+
+### Patch Changes
+
+- Updated dependencies [833b7b4]
+  - @germanamz/luca-common@0.7.0
+
 ## 0.6.0
 
 ### Minor Changes
