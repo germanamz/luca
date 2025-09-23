@@ -4,7 +4,7 @@ import { Account, Entry, Transaction } from '@germanamz/luca-common';
 
 describe('ReactiveMemoryBackend', () => {
   describe('createAccount', () => {
-    it('should notify the observer when a new account is created', async () => {
+    it('should notify the observer when a new account is created', () => {
       const backend = new ReactiveMemoryBackend();
       const observer = vi.fn();
 
@@ -16,7 +16,7 @@ describe('ReactiveMemoryBackend', () => {
         credits: new Decimal(0),
         debits: new Decimal(0),
       };
-      const accountId = await backend.createAccount(accountData);
+      const accountId = backend.createAccount(accountData);
 
       expect(observer).toHaveBeenCalledWith(
         'createAccount',
@@ -25,7 +25,7 @@ describe('ReactiveMemoryBackend', () => {
       );
     });
 
-    it('should not notify the observer when a new account is created when observer is removed', async () => {
+    it('should not notify the observer when a new account is created when observer is removed', () => {
       const backend = new ReactiveMemoryBackend();
       const observer = vi.fn();
 
@@ -38,7 +38,7 @@ describe('ReactiveMemoryBackend', () => {
         credits: new Decimal(0),
         debits: new Decimal(0),
       };
-      const accountId = await backend.createAccount(accountData);
+      const accountId = backend.createAccount(accountData);
 
       expect(observer).not.toHaveBeenCalledWith(
         'createAccount',
@@ -49,7 +49,7 @@ describe('ReactiveMemoryBackend', () => {
   });
 
   describe('createTransaction', () => {
-    it('should notify the observer when a new transaction is created', async () => {
+    it('should notify the observer when a new transaction is created', () => {
       const backend = new ReactiveMemoryBackend();
       const observer = vi.fn();
 
@@ -62,7 +62,7 @@ describe('ReactiveMemoryBackend', () => {
         sourceAccountId: 'sourceAccountId',
         destinationAccountId: 'destinationAccountId',
       };
-      const transactionId = await backend.createTransaction(transactionData);
+      const transactionId = backend.createTransaction(transactionData);
 
       expect(observer).toHaveBeenCalledWith(
         'createTransaction',
@@ -73,7 +73,7 @@ describe('ReactiveMemoryBackend', () => {
   });
 
   describe('createEntry', () => {
-    it('should notify the observer when a new entry is created', async () => {
+    it('should notify the observer when a new entry is created', () => {
       const backend = new ReactiveMemoryBackend();
       const observer = vi.fn();
 
@@ -86,7 +86,7 @@ describe('ReactiveMemoryBackend', () => {
         amount: new Decimal(0),
         date: new Date(),
       };
-      const entryId = await backend.createEntry(transactionData);
+      const entryId = backend.createEntry(transactionData);
 
       expect(observer).toHaveBeenCalledWith(
         'createEntry',
@@ -97,7 +97,7 @@ describe('ReactiveMemoryBackend', () => {
   });
 
   describe('updateAccount', () => {
-    it('should notify the observer when an account is updated', async () => {
+    it('should notify the observer when an account is updated', () => {
       const backend = new ReactiveMemoryBackend();
       const observer = vi.fn();
 
@@ -109,9 +109,9 @@ describe('ReactiveMemoryBackend', () => {
         credits: new Decimal(0),
         debits: new Decimal(0),
       };
-      const accountId = await backend.createAccount(accountData);
+      const accountId = backend.createAccount(accountData);
 
-      await backend.updateAccount(accountId, {
+      backend.updateAccount(accountId, {
         name: 'Updated Cash',
       });
 
@@ -120,14 +120,14 @@ describe('ReactiveMemoryBackend', () => {
       });
     });
 
-    it('should throw an error if the account does not exist', async () => {
+    it('should throw an error if the account does not exist', () => {
       const backend = new ReactiveMemoryBackend();
 
-      await expect(
+      expect(() =>
         backend.updateAccount('non-existent-account-id', {
           name: 'Updated Cash',
         }),
-      ).rejects.toThrow('Account non-existent-account-id not found');
+      ).toThrow('Account non-existent-account-id not found');
     });
   });
 });
