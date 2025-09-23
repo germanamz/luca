@@ -1,5 +1,11 @@
 # @germanamz/luca-common
 
+## 0.5.1
+
+### Patch Changes
+
+- bd3f6ec: Export Observer
+
 ## 0.5.0
 
 ### Minor Changes
