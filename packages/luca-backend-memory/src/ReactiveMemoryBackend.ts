@@ -8,7 +8,7 @@ import {
 } from '@germanamz/luca-common';
 import { MemoryBackend } from './MemoryBackend';
 
-type Actions = keyof CreateBackend | keyof UpdateBackend;
+type Actions = keyof CreateBackend | keyof UpdateBackend | 'createAccount';
 
 type Observer = <A, R>(action: Actions, args: A, result: R) => void;
 
