@@ -52,7 +52,6 @@ export class Luca {
       amount,
       destinationAccountId,
       sourceAccountId,
-      concept,
       parentId,
       date,
     }: CreateTransactionRequest,
@@ -65,7 +64,6 @@ export class Luca {
     );
     const transactionId = await this.backend.createTransaction(
       {
-        concept,
         amount,
         destinationAccountId,
         sourceAccountId,

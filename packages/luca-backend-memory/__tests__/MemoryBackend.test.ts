@@ -33,7 +33,6 @@ describe('MemoryBackend', () => {
     it('should create a new transaction', () => {
       const backend = new MemoryBackend();
       const transactionData: Omit<Transaction, 'id'> = {
-        concept: 'Test Transaction',
         amount: new Decimal(0),
         date: new Date(),
         sourceAccountId: 'sourceAccountId',
@@ -137,7 +136,6 @@ describe('MemoryBackend', () => {
     it('should get a transaction', () => {
       const backend = new MemoryBackend();
       const transactionData: Omit<Transaction, 'id'> = {
-        concept: 'Test Transaction',
         amount: new Decimal(0),
         date: new Date(),
         sourceAccountId: 'sourceAccountId',
