@@ -1,7 +1,6 @@
 import { Account, Entry, Transaction } from './types';
 
 export interface CreateBackend {
-  createAccount(account: Omit<Account, 'id'>): Promise<string>;
   createTransaction(transaction: Omit<Transaction, 'id'>): Promise<string>;
   createEntry(entry: Omit<Entry, 'id'>): Promise<string>;
 }

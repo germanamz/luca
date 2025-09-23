@@ -1,6 +1,5 @@
 import { Backend, inverseSide } from '@germanamz/luca-common';
 import { CreateTransactionRequest, CreateEntryRequest } from './types';
-import Decimal from 'decimal.js';
 
 export class Luca {
   readonly backend: Backend;
@@ -11,14 +10,6 @@ export class Luca {
 
   async createEntry(request: CreateEntryRequest) {
     const { accountId, transactionId, side, amount, date } = request;
-    let { credits, debits } = await this.backend.getAccount(accountId);
-
-    if (side === 'CREDIT') {
-      credits = credits.add(amount);
-    } else {
-      debits = debits.add(amount);
-    }
-
     const entryId = await this.backend.createEntry({
       accountId,
       transactionId,
@@ -26,8 +17,24 @@ export class Luca {
       amount,
       date,
     });
+    let accId: string | undefined = accountId;
 
-    await this.backend.updateAccount(accountId, { credits, debits });
+    while (accId) {
+      let { credits, debits, parentId } = await this.backend.getAccount(accId);
+
+      if (side === 'CREDIT') {
+        credits = credits.add(amount);
+      } else {
+        debits = debits.add(amount);
+      }
+
+      await this.backend.updateAccount(accId, {
+        credits,
+        debits,
+      });
+
+      accId = parentId;
+    }
 
     return entryId;
   }
@@ -76,35 +83,5 @@ export class Luca {
       destinationEntryId,
       sourceEntryId,
     };
-  }
-
-  async getBalance(
-    accountId: string,
-  ): Promise<{ debits: Decimal; credits: Decimal }> {
-    const account = await this.backend.getAccount(accountId);
-    const children = await this.backend.getAccountChildren(accountId);
-
-    if (children.length === 0) {
-      return { debits: account.debits, credits: account.credits };
-    }
-
-    let debits = new Decimal(0);
-    let credits = new Decimal(0);
-
-    for (const child of children) {
-      const { debits: childDebits, credits: childCredits } =
-        await this.getBalance(child.id);
-
-      debits = debits.add(childDebits);
-      credits = credits.add(childCredits);
-    }
-
-    return { debits, credits };
-  }
-
-  async updateBalance(accountId: string) {
-    const { debits, credits } = await this.getBalance(accountId);
-
-    await this.backend.updateAccount(accountId, { debits, credits });
   }
 }
