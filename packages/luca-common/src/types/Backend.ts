@@ -1,22 +1,18 @@
 import { Account, Entry, Transaction } from './types';
 
-export interface CreateBackend {
-  createTransaction(transaction: Omit<Transaction, 'id'>): Promise<string>;
-  createEntry(entry: Omit<Entry, 'id'>): Promise<string>;
-}
+export type MaybePromise<T> = T | Promise<T>;
 
-export interface GetBackend {
-  getAccount(accountId: string): Promise<Account>;
-  getAccountChildren(accountId: string): Promise<Account[]>;
-  getTransaction(transactionId: string): Promise<Transaction>;
-  getEntry(entryId: string): Promise<Entry>;
-}
+export interface Backend {
+  createTransaction(transaction: Omit<Transaction, 'id'>): MaybePromise<string>;
+  createEntry(entry: Omit<Entry, 'id'>): MaybePromise<string>;
 
-export interface UpdateBackend {
+  getAccount(accountId: string): MaybePromise<Account>;
+  getAccountChildren(accountId: string): MaybePromise<Account[]>;
+  getTransaction(transactionId: string): MaybePromise<Transaction>;
+  getEntry(entryId: string): MaybePromise<Entry>;
+
   updateAccount(
     accountId: string,
     account: Partial<Omit<Account, 'id'>>,
-  ): Promise<void>;
+  ): MaybePromise<void>;
 }
-
-export interface Backend extends CreateBackend, GetBackend, UpdateBackend {}

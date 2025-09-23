@@ -10,7 +10,7 @@ import {
 
 describe('MemoryBackend', () => {
   describe('createAccount', () => {
-    it('should create a new account', async () => {
+    it('should create a new account', () => {
       const backend = new MemoryBackend();
       const accountData: Omit<Account, 'id'> = {
         side: 'DEBIT',
@@ -18,7 +18,7 @@ describe('MemoryBackend', () => {
         credits: new Decimal(0),
         debits: new Decimal(0),
       };
-      const accountId = await backend.createAccount(accountData);
+      const accountId = backend.createAccount(accountData);
 
       expect(typeof accountId).toBe('string');
       expect(backend.accounts.size).toBe(1);
@@ -30,7 +30,7 @@ describe('MemoryBackend', () => {
   });
 
   describe('createTransaction', () => {
-    it('should create a new transaction', async () => {
+    it('should create a new transaction', () => {
       const backend = new MemoryBackend();
       const transactionData: Omit<Transaction, 'id'> = {
         concept: 'Test Transaction',
@@ -39,7 +39,7 @@ describe('MemoryBackend', () => {
         sourceAccountId: 'sourceAccountId',
         destinationAccountId: 'destinationAccountId',
       };
-      const transactionId = await backend.createTransaction(transactionData);
+      const transactionId = backend.createTransaction(transactionData);
 
       expect(typeof transactionId).toBe('string');
       expect(backend.transactions.size).toBe(1);
@@ -51,7 +51,7 @@ describe('MemoryBackend', () => {
   });
 
   describe('createEntry', () => {
-    it('should create a new entry', async () => {
+    it('should create a new entry', () => {
       const backend = new MemoryBackend();
       const transactionData: Omit<Entry, 'id'> = {
         accountId: 'accountId',
@@ -60,7 +60,7 @@ describe('MemoryBackend', () => {
         amount: new Decimal(0),
         date: new Date(),
       };
-      const entryId = await backend.createEntry(transactionData);
+      const entryId = backend.createEntry(transactionData);
 
       expect(typeof entryId).toBe('string');
       expect(backend.entries.size).toBe(1);
@@ -72,7 +72,7 @@ describe('MemoryBackend', () => {
   });
 
   describe('getAccount', () => {
-    it('should get an account', async () => {
+    it('should get an account', () => {
       const backend = new MemoryBackend();
       const accountData: Omit<Account, 'id'> = {
         side: 'DEBIT',
@@ -80,8 +80,8 @@ describe('MemoryBackend', () => {
         credits: new Decimal(0),
         debits: new Decimal(0),
       };
-      const accountId = await backend.createAccount(accountData);
-      const account = await backend.getAccount(accountId);
+      const accountId = backend.createAccount(accountData);
+      const account = backend.getAccount(accountId);
 
       expect(account).toEqual({
         id: accountId,
@@ -89,17 +89,17 @@ describe('MemoryBackend', () => {
       });
     });
 
-    it('should throw an error if the account does not exist', async () => {
+    it('should throw an error if the account does not exist', () => {
       const backend = new MemoryBackend();
 
-      await expect(
-        backend.getAccount('non-existent-account-id'),
-      ).rejects.toThrow('Account non-existent-account-id not found');
+      expect(() => backend.getAccount('non-existent-account-id')).toThrow(
+        'Account non-existent-account-id not found',
+      );
     });
   });
 
   describe('updateAccount', () => {
-    it('should update an account', async () => {
+    it('should update an account', () => {
       const backend = new MemoryBackend();
       const accountData: Omit<Account, 'id'> = {
         side: 'DEBIT',
@@ -107,14 +107,14 @@ describe('MemoryBackend', () => {
         credits: new Decimal(0),
         debits: new Decimal(0),
       };
-      const accountId = await backend.createAccount(accountData);
-      const originalAccount = await backend.getAccount(accountId);
+      const accountId = backend.createAccount(accountData);
+      const originalAccount = backend.getAccount(accountId);
 
-      await backend.updateAccount(accountId, {
+      backend.updateAccount(accountId, {
         name: 'Updated Cash',
       });
 
-      const account = await backend.getAccount(accountId);
+      const account = backend.getAccount(accountId);
 
       expect(account).toEqual({
         ...originalAccount,
@@ -122,19 +122,19 @@ describe('MemoryBackend', () => {
       });
     });
 
-    it('should throw an error if the account does not exist', async () => {
+    it('should throw an error if the account does not exist', () => {
       const backend = new MemoryBackend();
 
-      await expect(
+      expect(() =>
         backend.updateAccount('non-existent-account-id', {
           name: 'Updated Cash',
         }),
-      ).rejects.toThrow('Account non-existent-account-id not found');
+      ).toThrow('Account non-existent-account-id not found');
     });
   });
 
   describe('getTransaction', () => {
-    it('should get a transaction', async () => {
+    it('should get a transaction', () => {
       const backend = new MemoryBackend();
       const transactionData: Omit<Transaction, 'id'> = {
         concept: 'Test Transaction',
@@ -143,8 +143,8 @@ describe('MemoryBackend', () => {
         sourceAccountId: 'sourceAccountId',
         destinationAccountId: 'destinationAccountId',
       };
-      const transactionId = await backend.createTransaction(transactionData);
-      const transaction = await backend.getTransaction(transactionId);
+      const transactionId = backend.createTransaction(transactionData);
+      const transaction = backend.getTransaction(transactionId);
 
       expect(transaction).toEqual({
         id: transactionId,
@@ -152,17 +152,17 @@ describe('MemoryBackend', () => {
       });
     });
 
-    it('should throw an error if the transaction does not exist', async () => {
+    it('should throw an error if the transaction does not exist', () => {
       const backend = new MemoryBackend();
 
-      await expect(
+      expect(() =>
         backend.getTransaction('non-existent-transaction-id'),
-      ).rejects.toThrow('Transaction non-existent-transaction-id not found');
+      ).toThrow('Transaction non-existent-transaction-id not found');
     });
   });
 
   describe('getEntry', () => {
-    it('should get an entry', async () => {
+    it('should get an entry', () => {
       const backend = new MemoryBackend();
       const entryData: Omit<Entry, 'id'> = {
         accountId: 'accountId',
@@ -171,8 +171,8 @@ describe('MemoryBackend', () => {
         amount: new Decimal(0),
         date: new Date(),
       };
-      const entryId = await backend.createEntry(entryData);
-      const entry = await backend.getEntry(entryId);
+      const entryId = backend.createEntry(entryData);
+      const entry = backend.getEntry(entryId);
 
       expect(entry).toEqual({
         id: entryId,
@@ -180,34 +180,33 @@ describe('MemoryBackend', () => {
       });
     });
 
-    it('should throw an error if the entry does not exist', async () => {
+    it('should throw an error if the entry does not exist', () => {
       const backend = new MemoryBackend();
 
-      await expect(backend.getEntry('non-existent-entry-id')).rejects.toThrow(
+      expect(() => backend.getEntry('non-existent-entry-id')).toThrow(
         'Entry non-existent-entry-id not found',
       );
     });
   });
 
   describe('getAccountChildren', () => {
-    it('should get the children of an account', async () => {
+    it('should get the children of an account', () => {
       const backend = new MemoryBackend();
       const profitAccountData = mockCreditAccountData({
         name: 'Profit',
       });
-      const profitAccountId = await backend.createAccount(profitAccountData);
+      const profitAccountId = backend.createAccount(profitAccountData);
       const expensesAccountData = mockDebitAccountData({
         name: 'Expenses',
         parentId: profitAccountId,
       });
-      const expensesAccountId =
-        await backend.createAccount(expensesAccountData);
+      const expensesAccountId = backend.createAccount(expensesAccountData);
       const revenueAccountData = mockCreditAccountData({
         name: 'Revenue',
         parentId: profitAccountId,
       });
-      const revenueAccountId = await backend.createAccount(revenueAccountData);
-      const children = await backend.getAccountChildren(profitAccountId);
+      const revenueAccountId = backend.createAccount(revenueAccountData);
+      const children = backend.getAccountChildren(profitAccountId);
 
       expect(children).toEqual([
         { ...expensesAccountData, id: expensesAccountId },

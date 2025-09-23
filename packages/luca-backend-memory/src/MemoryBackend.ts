@@ -15,27 +15,25 @@ export class MemoryBackend implements Backend {
     this.idGenerator = idGenerator || generateId;
   }
 
-  async createAccount(account: Omit<Account, 'id'>): Promise<string> {
+  createAccount(account: Omit<Account, 'id'>) {
     const id = this.idGenerator();
     this.accounts.set(id, { ...account, id });
     return id;
   }
 
-  async createTransaction(
-    transaction: Omit<Transaction, 'id'>,
-  ): Promise<string> {
+  createTransaction(transaction: Omit<Transaction, 'id'>): string {
     const id = this.idGenerator();
     this.transactions.set(id, { ...transaction, id });
     return id;
   }
 
-  async createEntry(entry: Omit<Entry, 'id'>): Promise<string> {
+  createEntry(entry: Omit<Entry, 'id'>) {
     const id = this.idGenerator();
     this.entries.set(id, { ...entry, id });
     return id;
   }
 
-  async getAccount(accountId: string): Promise<Account> {
+  getAccount(accountId: string): Account {
     const account = this.accounts.get(accountId);
 
     if (!account) {
@@ -45,17 +43,17 @@ export class MemoryBackend implements Backend {
     return { ...account }; // Clone the account to avoid mutating the original object
   }
 
-  async getAccountChildren(accountId: string): Promise<Account[]> {
+  getAccountChildren(accountId: string): Account[] {
     return Array.from(this.accounts.values()).filter(
       (account) => account.parentId === accountId,
     );
   }
 
-  async updateAccount(
+  updateAccount(
     accountId: string,
     account: Partial<Omit<Account, 'id'>>,
-  ): Promise<void> {
-    const originalAccount = await this.getAccount(accountId);
+  ): void {
+    const originalAccount = this.getAccount(accountId);
 
     this.accounts.set(accountId, {
       ...originalAccount,
@@ -63,7 +61,7 @@ export class MemoryBackend implements Backend {
     });
   }
 
-  async getTransaction(transactionId: string): Promise<Transaction> {
+  getTransaction(transactionId: string): Transaction {
     const transaction = this.transactions.get(transactionId);
 
     if (!transaction) {
@@ -73,7 +71,7 @@ export class MemoryBackend implements Backend {
     return { ...transaction }; // Clone the transaction to avoid mutating the original object
   }
 
-  async getEntry(entryId: string): Promise<Entry> {
+  getEntry(entryId: string): Entry {
     const entry = this.entries.get(entryId);
 
     if (!entry) {
