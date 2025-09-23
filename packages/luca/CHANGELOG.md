@@ -1,5 +1,17 @@
 # @germanamz/luca
 
+## 0.5.0
+
+### Minor Changes
+
+- 4302d98: Syncronous MemoryBackend
+
+### Patch Changes
+
+- Updated dependencies [4302d98]
+  - @germanamz/luca-backend-memory@0.5.0
+  - @germanamz/luca-common@0.5.0
+
 ## 0.4.0
 
 ### Minor Changes

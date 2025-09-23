@@ -1,5 +1,11 @@
 # @germanamz/luca-common
 
+## 0.5.0
+
+### Minor Changes
+
+- 4302d98: Syncronous MemoryBackend
+
 ## 0.4.0
 
 ### Minor Changes
