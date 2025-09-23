@@ -1,5 +1,17 @@
 # @germanamz/luca
 
+## 0.6.0
+
+### Minor Changes
+
+- a9d9257: Added lib function caclulateBalance for a standard way to calculate any sided balance.
+
+### Patch Changes
+
+- Updated dependencies [a9d9257]
+  - @germanamz/luca-backend-memory@0.6.0
+  - @germanamz/luca-common@0.6.0
+
 ## 0.5.1
 
 ### Patch Changes
