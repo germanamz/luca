@@ -1,5 +1,16 @@
 # @germanamz/luca-backend-memory
 
+## 0.8.0
+
+### Minor Changes
+
+- 8fdce31: Removed concept from Transaction in favor for an abstract Luca-Transaction format that fits to any other data structure that Luca might be wrapped by.
+
+### Patch Changes
+
+- Updated dependencies [8fdce31]
+  - @germanamz/luca-common@0.8.0
+
 ## 0.7.0
 
 ### Minor Changes
