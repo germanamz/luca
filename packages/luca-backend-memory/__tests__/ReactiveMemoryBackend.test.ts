@@ -56,7 +56,6 @@ describe('ReactiveMemoryBackend', () => {
       backend.on(observer);
 
       const transactionData: Omit<Transaction, 'id'> = {
-        concept: 'Test Transaction',
         amount: new Decimal(0),
         date: new Date(),
         sourceAccountId: 'sourceAccountId',

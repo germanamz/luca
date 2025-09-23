@@ -125,7 +125,6 @@ describe('Luca', () => {
             sourceAccountId,
             destinationAccountId,
             amount: new Decimal(100),
-            concept: 'Test Transaction',
             date: new Date(),
           });
         const transaction = backend.getTransaction(transactionId);
@@ -137,7 +136,6 @@ describe('Luca', () => {
           sourceAccountId,
           destinationAccountId,
           amount: new Decimal(100),
-          concept: 'Test Transaction',
           date: expect.any(Date),
         });
         expect(sourceEntry).toEqual({
@@ -172,7 +170,6 @@ describe('Luca', () => {
         sourceAccountId: 'sourceAccountId',
         destinationAccountId: 'destinationAccountId',
         amount: new Decimal(100),
-        concept: 'Test Transaction',
         date: new Date(),
       },
       ctx,
@@ -183,7 +180,6 @@ describe('Luca', () => {
         sourceAccountId: 'sourceAccountId',
         destinationAccountId: 'destinationAccountId',
         amount: new Decimal(100),
-        concept: 'Test Transaction',
         date: expect.any(Date),
       },
       ctx,

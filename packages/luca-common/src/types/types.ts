@@ -13,7 +13,6 @@ export type Account = {
 
 export type Transaction = {
   id: string;
-  concept: string;
   amount: Decimal;
   date: Date;
   sourceAccountId: string;

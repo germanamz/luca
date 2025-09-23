@@ -13,7 +13,6 @@ export type CreateTransactionRequest = {
   sourceAccountId: string;
   destinationAccountId: string;
   amount: Decimal;
-  concept: string;
   date: Date;
   parentId?: string;
 };
