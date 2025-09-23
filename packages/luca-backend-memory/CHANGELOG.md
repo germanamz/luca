@@ -1,5 +1,16 @@
 # @germanamz/luca-backend-memory
 
+## 0.4.0
+
+### Minor Changes
+
+- c08d0ea: Update Accounts tree from bottom to top for each created entry.
+
+### Patch Changes
+
+- Updated dependencies [c08d0ea]
+  - @germanamz/luca-common@0.4.0
+
 ## 0.3.0
 
 ### Minor Changes
