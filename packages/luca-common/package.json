@@ -1,6 +1,6 @@
 {
   "name": "@germanamz/luca-common",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Just a simple common package for the luca engine",
   "files": [
     "dist"

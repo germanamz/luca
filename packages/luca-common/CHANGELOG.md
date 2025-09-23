@@ -1,5 +1,11 @@
 # @germanamz/luca-common
 
+## 0.6.0
+
+### Minor Changes
+
+- a9d9257: Added lib function caclulateBalance for a standard way to calculate any sided balance.
+
 ## 0.5.1
 
 ### Patch Changes
