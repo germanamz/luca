@@ -3,6 +3,7 @@ import { Luca } from '../src';
 import { Decimal } from 'decimal.js';
 import { inverseSide, mockEntryData, Side } from '@germanamz/luca-common';
 import { profitAccountPreset } from './presets';
+import { mockBackend } from './mocks';
 
 describe('Luca', () => {
   describe('createEntry', () => {
@@ -29,11 +30,11 @@ describe('Luca', () => {
         side: revenueAccountData.side,
       });
       const revenueEntryId = await luca.createEntry(revenueEntryData);
-      const profitAccount = await backend.getAccount(profitAccountId);
-      const expensesAccount = await backend.getAccount(expensesAccountId);
-      const revenueAccount = await backend.getAccount(revenueAccountId);
-      const expensesEntry = await backend.getEntry(expensesEntryId);
-      const revenueEntry = await backend.getEntry(revenueEntryId);
+      const profitAccount = backend.getAccount(profitAccountId);
+      const expensesAccount = backend.getAccount(expensesAccountId);
+      const revenueAccount = backend.getAccount(revenueAccountId);
+      const expensesEntry = backend.getEntry(expensesEntryId);
+      const revenueEntry = backend.getEntry(revenueEntryId);
 
       expect(expensesEntry).toEqual({
         ...expensesEntryData,
@@ -62,6 +63,30 @@ describe('Luca', () => {
         debits: new Decimal(0),
       });
     });
+
+    it('should create a entry and update the account and its parents balance with a context', async () => {
+      const backend = mockBackend();
+      const luca = new Luca(backend);
+      const ctx = { a: 'a' };
+      const expensesEntryData = mockEntryData({
+        accountId: 'expensesAccountId',
+        amount: new Decimal(10),
+        side: 'DEBIT',
+      });
+
+      await luca.createEntry(expensesEntryData, ctx);
+
+      expect(backend.createEntry).toHaveBeenCalledWith(expensesEntryData, ctx);
+      expect(backend.getAccount).toHaveBeenCalledWith('expensesAccountId', ctx);
+      expect(backend.updateAccount).toHaveBeenCalledWith(
+        'expensesAccountId',
+        {
+          credits: new Decimal(0),
+          debits: new Decimal(10),
+        },
+        ctx,
+      );
+    });
   });
 
   describe('createTransaction', () => {
@@ -82,13 +107,13 @@ describe('Luca', () => {
       'should create a transaction from $sourceName ($sourceSide) to $destinationName ($destinationSide)',
       async ({ sourceSide, sourceName, destinationSide, destinationName }) => {
         const backend = new MemoryBackend();
-        const sourceAccountId = await backend.createAccount({
+        const sourceAccountId = backend.createAccount({
           name: sourceName,
           side: sourceSide as Side,
           credits: new Decimal(0),
           debits: new Decimal(0),
         });
-        const destinationAccountId = await backend.createAccount({
+        const destinationAccountId = backend.createAccount({
           name: destinationName,
           side: destinationSide as Side,
           credits: new Decimal(0),
@@ -103,9 +128,9 @@ describe('Luca', () => {
             concept: 'Test Transaction',
             date: new Date(),
           });
-        const transaction = await backend.getTransaction(transactionId);
-        const sourceEntry = await backend.getEntry(sourceEntryId);
-        const destinationEntry = await backend.getEntry(destinationEntryId);
+        const transaction = backend.getTransaction(transactionId);
+        const sourceEntry = backend.getEntry(sourceEntryId);
+        const destinationEntry = backend.getEntry(destinationEntryId);
 
         expect(transaction).toEqual({
           id: transactionId,
@@ -135,6 +160,58 @@ describe('Luca', () => {
           date: expect.any(Date),
         });
       },
+    );
+  });
+
+  it('should create a transaction and update the accounts and their parents balance with a context', async () => {
+    const backend = mockBackend();
+    const luca = new Luca(backend);
+    const ctx = { a: 'a' };
+    await luca.createTransaction(
+      {
+        sourceAccountId: 'sourceAccountId',
+        destinationAccountId: 'destinationAccountId',
+        amount: new Decimal(100),
+        concept: 'Test Transaction',
+        date: new Date(),
+      },
+      ctx,
+    );
+
+    expect(backend.createTransaction).toHaveBeenCalledWith(
+      {
+        sourceAccountId: 'sourceAccountId',
+        destinationAccountId: 'destinationAccountId',
+        amount: new Decimal(100),
+        concept: 'Test Transaction',
+        date: expect.any(Date),
+      },
+      ctx,
+    );
+    expect(backend.getAccount).toHaveBeenCalledWith('sourceAccountId', ctx);
+    expect(backend.getAccount).toHaveBeenCalledWith(
+      'destinationAccountId',
+      ctx,
+    );
+    expect(backend.createEntry).toHaveBeenCalledWith(
+      {
+        accountId: 'sourceAccountId',
+        transactionId: 'transactionId',
+        side: 'CREDIT',
+        amount: new Decimal(100),
+        date: expect.any(Date),
+      },
+      ctx,
+    );
+    expect(backend.createEntry).toHaveBeenCalledWith(
+      {
+        accountId: 'destinationAccountId',
+        transactionId: 'transactionId',
+        side: 'DEBIT',
+        amount: new Decimal(100),
+        date: expect.any(Date),
+      },
+      ctx,
     );
   });
 });
